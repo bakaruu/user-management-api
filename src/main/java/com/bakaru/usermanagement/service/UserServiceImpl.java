@@ -4,6 +4,9 @@ import com.bakaru.usermanagement.dto.*;
 import com.bakaru.usermanagement.entity.Role;
 import com.bakaru.usermanagement.entity.User;
 import com.bakaru.usermanagement.entity.UserStatus;
+import com.bakaru.usermanagement.exception.InvalidCredentialsException;
+import com.bakaru.usermanagement.exception.ResourceAlreadyExistsException;
+import com.bakaru.usermanagement.exception.ResourceNotFoundException;
 import com.bakaru.usermanagement.repository.UserRepository;
 import com.bakaru.usermanagement.security.JwtService;
 import lombok.RequiredArgsConstructor;
@@ -24,10 +27,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public AuthResponse register(RegisterRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("Email already exists");
+            throw new ResourceAlreadyExistsException("Email already exists");
         }
         if (userRepository.existsByDni(request.getDni())) {
-            throw new RuntimeException("DNI already exists");
+            throw new ResourceAlreadyExistsException("DNI already exists");
         }
 
         User user = User.builder()
@@ -54,14 +57,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public AuthResponse login(LoginRequest request) {
         User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         if (user.getStatus() == UserStatus.SUSPENDED) {
-            throw new RuntimeException("Account is suspended");
+            throw new InvalidCredentialsException("Account is suspended");
         }
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid credentials");
+            throw new InvalidCredentialsException("Invalid credentials");
         }
 
         String token = jwtService.generateToken(user.getId(), user.getEmail(), user.getRole().name());
