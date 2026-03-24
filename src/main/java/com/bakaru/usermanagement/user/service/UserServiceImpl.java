@@ -1,5 +1,6 @@
 package com.bakaru.usermanagement.user.service;
 
+import com.bakaru.usermanagement.exception.OperationNotAllowedException;
 import com.bakaru.usermanagement.user.dto.*;
 import com.bakaru.usermanagement.user.entity.Role;
 import com.bakaru.usermanagement.user.entity.User;
@@ -121,6 +122,11 @@ public class UserServiceImpl implements UserService {
     public void changeUserStatus(UUID id, UserStatus status) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (user.getRole() == Role.ADMIN) {
+            throw new OperationNotAllowedException("Cannot change status of an admin account");
+        }
+
         user.setStatus(status);
         userRepository.save(user);
     }
@@ -129,6 +135,10 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(UUID id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (user.getRole() == Role.ADMIN) {
+            throw new ResourceAlreadyExistsException("Cannot delete an admin account");
+        }
         userRepository.delete(user);
     }
 

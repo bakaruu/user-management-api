@@ -81,8 +81,8 @@ public class UserController {
     @PatchMapping("/{id}/status")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> changeUserStatus(@PathVariable UUID id,
-                                                 @RequestBody UserStatus status) {
-        userService.changeUserStatus(id, status);
+                                                 @RequestBody String status) {
+        userService.changeUserStatus(id, UserStatus.valueOf(status.replace("\"", "")));
         return ResponseEntity.noContent().build();
     }
 

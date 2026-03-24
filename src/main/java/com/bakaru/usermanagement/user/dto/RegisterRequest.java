@@ -10,24 +10,24 @@ import lombok.Setter;
 @Setter
 public class RegisterRequest {
 
-    @NotBlank
-    @Size(max = 50)
+    @NotBlank(message = "First name is required")
+    @Size(max = 50, message = "First name must be at most 50 characters")
     private String firstName;
 
-    @NotBlank
-    @Size(max = 50)
+    @NotBlank(message = "Last name is required")
+    @Size(max = 50, message = "Last name must be at most 50 characters")
     private String lastName;
 
-    @NotBlank
-    @Size(max = 20)
+    @NotBlank(message = "DNI is required")
+    @Size(max = 9, message = "DNI must be at most 8 characters")
     private String dni;
 
-    @NotBlank
-    @Email
-    @Size(max = 100)
+    @NotBlank(message = "Email is required")
+    @Email(message = "Email must be valid")
+    @Size(max = 100, message = "Email must be at most 100 characters")
     private String email;
 
-    @NotBlank
-    @Size(min = 8, max = 255)
+    @NotBlank(message = "Password is required")
+    @Size(min = 8, max = 255, message = "Password must be at least 8 characters")
     private String password;
 }
