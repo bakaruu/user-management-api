@@ -1,11 +1,11 @@
-package com.bakaru.usermanagement.repository;
+package com.bakaru.usermanagement.service;
 
 import com.bakaru.usermanagement.dto.*;
 import com.bakaru.usermanagement.entity.Role;
 import com.bakaru.usermanagement.entity.User;
 import com.bakaru.usermanagement.entity.UserStatus;
 import com.bakaru.usermanagement.repository.UserRepository;
-import com.bakaru.usermanagement.service.UserService;
+import com.bakaru.usermanagement.security.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,6 +19,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
     @Override
     public AuthResponse register(RegisterRequest request) {
@@ -41,7 +42,11 @@ public class UserServiceImpl implements UserService {
 
         userRepository.save(user);
 
+        String token = jwtService.generateToken(user.getId(), user.getEmail(), user.getRole().name());
+
         return AuthResponse.builder()
+                .token(token)
+                .role(user.getRole())
                 .user(mapToUserResponse(user))
                 .build();
     }
@@ -59,7 +64,11 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("Invalid credentials");
         }
 
+        String token = jwtService.generateToken(user.getId(), user.getEmail(), user.getRole().name());
+
         return AuthResponse.builder()
+                .token(token)
+                .role(user.getRole())
                 .user(mapToUserResponse(user))
                 .build();
     }
