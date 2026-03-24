@@ -1,10 +1,11 @@
-package com.bakaru.usermanagement.service;
+package com.bakaru.usermanagement.repository;
 
 import com.bakaru.usermanagement.dto.*;
 import com.bakaru.usermanagement.entity.Role;
 import com.bakaru.usermanagement.entity.User;
 import com.bakaru.usermanagement.entity.UserStatus;
 import com.bakaru.usermanagement.repository.UserRepository;
+import com.bakaru.usermanagement.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
