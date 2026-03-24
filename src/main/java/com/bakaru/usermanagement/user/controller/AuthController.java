@@ -1,9 +1,9 @@
-package com.bakaru.usermanagement.controller;
+package com.bakaru.usermanagement.user.controller;
 
-import com.bakaru.usermanagement.dto.AuthResponse;
-import com.bakaru.usermanagement.dto.LoginRequest;
-import com.bakaru.usermanagement.dto.RegisterRequest;
-import com.bakaru.usermanagement.service.UserService;
+import com.bakaru.usermanagement.user.dto.AuthResponse;
+import com.bakaru.usermanagement.user.dto.LoginRequest;
+import com.bakaru.usermanagement.user.dto.RegisterRequest;
+import com.bakaru.usermanagement.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

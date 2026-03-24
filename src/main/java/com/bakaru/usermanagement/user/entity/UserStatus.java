@@ -1,4 +1,4 @@
-package com.bakaru.usermanagement.entity;
+package com.bakaru.usermanagement.user.entity;
 
 public enum UserStatus {
     ACTIVE,

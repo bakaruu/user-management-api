@@ -1,6 +1,6 @@
-package com.bakaru.usermanagement.repository;
+package com.bakaru.usermanagement.user.repository;
 
-import com.bakaru.usermanagement.entity.User;
+import com.bakaru.usermanagement.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

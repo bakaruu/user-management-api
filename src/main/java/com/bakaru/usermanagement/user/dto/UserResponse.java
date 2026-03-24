@@ -1,7 +1,7 @@
-package com.bakaru.usermanagement.dto;
+package com.bakaru.usermanagement.user.dto;
 
-import com.bakaru.usermanagement.entity.Role;
-import com.bakaru.usermanagement.entity.UserStatus;
+import com.bakaru.usermanagement.user.entity.Role;
+import com.bakaru.usermanagement.user.entity.UserStatus;
 import lombok.Builder;
 import lombok.Getter;
 

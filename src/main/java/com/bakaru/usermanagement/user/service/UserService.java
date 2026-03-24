@@ -1,7 +1,7 @@
-package com.bakaru.usermanagement.service;
+package com.bakaru.usermanagement.user.service;
 
-import com.bakaru.usermanagement.dto.*;
-import com.bakaru.usermanagement.entity.UserStatus;
+import com.bakaru.usermanagement.user.dto.*;
+import com.bakaru.usermanagement.user.entity.UserStatus;
 
 import java.util.List;
 import java.util.UUID;

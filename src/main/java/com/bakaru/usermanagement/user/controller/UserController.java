@@ -1,10 +1,9 @@
-package com.bakaru.usermanagement.controller;
+package com.bakaru.usermanagement.user.controller;
 
-import com.bakaru.usermanagement.dto.AuthResponse;
-import com.bakaru.usermanagement.dto.UpdateUserRequest;
-import com.bakaru.usermanagement.dto.UserResponse;
-import com.bakaru.usermanagement.entity.UserStatus;
-import com.bakaru.usermanagement.service.UserService;
+import com.bakaru.usermanagement.user.dto.UpdateUserRequest;
+import com.bakaru.usermanagement.user.dto.UserResponse;
+import com.bakaru.usermanagement.user.entity.UserStatus;
+import com.bakaru.usermanagement.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

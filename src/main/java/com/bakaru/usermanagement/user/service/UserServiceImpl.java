@@ -1,13 +1,13 @@
-package com.bakaru.usermanagement.service;
+package com.bakaru.usermanagement.user.service;
 
-import com.bakaru.usermanagement.dto.*;
-import com.bakaru.usermanagement.entity.Role;
-import com.bakaru.usermanagement.entity.User;
-import com.bakaru.usermanagement.entity.UserStatus;
+import com.bakaru.usermanagement.user.dto.*;
+import com.bakaru.usermanagement.user.entity.Role;
+import com.bakaru.usermanagement.user.entity.User;
+import com.bakaru.usermanagement.user.entity.UserStatus;
 import com.bakaru.usermanagement.exception.InvalidCredentialsException;
 import com.bakaru.usermanagement.exception.ResourceAlreadyExistsException;
 import com.bakaru.usermanagement.exception.ResourceNotFoundException;
-import com.bakaru.usermanagement.repository.UserRepository;
+import com.bakaru.usermanagement.user.repository.UserRepository;
 import com.bakaru.usermanagement.security.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
