@@ -33,6 +33,12 @@ public class UpdateUserRequest {
         return firstName == null || !firstName.isBlank();
     }
 
+
+    @AssertTrue(message = "Last name cannot be blank")
+    public boolean isLastNameValid() {
+        return lastName == null || !lastName.isBlank();
+    }
+
     @AssertTrue(message = "Email cannot be blank")
     public boolean isEmailValid() {
         return email == null || !email.isBlank();
