@@ -1,6 +1,7 @@
 package com.bakaru.usermanagement.user.service;
 
 import com.bakaru.usermanagement.exception.OperationNotAllowedException;
+import com.bakaru.usermanagement.security.RefreshTokenService;
 import com.bakaru.usermanagement.user.dto.*;
 import com.bakaru.usermanagement.user.entity.Role;
 import com.bakaru.usermanagement.user.entity.User;
@@ -24,6 +25,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final RefreshTokenService refreshTokenService;
 
     @Override
     public AuthResponse register(RegisterRequest request) {
@@ -47,9 +49,11 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
         String token = jwtService.generateToken(user.getId(), user.getEmail(), user.getRole().name());
+        String refreshToken = refreshTokenService.generate(user);
 
         return AuthResponse.builder()
                 .token(token)
+                .refreshToken(refreshToken)
                 .role(user.getRole())
                 .user(mapToUserResponse(user))
                 .build();
@@ -69,12 +73,33 @@ public class UserServiceImpl implements UserService {
         }
 
         String token = jwtService.generateToken(user.getId(), user.getEmail(), user.getRole().name());
+        String refreshToken = refreshTokenService.generate(user);
 
         return AuthResponse.builder()
                 .token(token)
+                .refreshToken(refreshToken)
                 .role(user.getRole())
                 .user(mapToUserResponse(user))
                 .build();
+    }
+
+    @Override
+    public AuthResponse refreshToken(RefreshTokenRequest request) {
+        User user = refreshTokenService.validateAndGetUser(request.getRefreshToken());
+
+        String newAccessToken = jwtService.generateToken(user.getId(), user.getEmail(), user.getRole().name());
+
+        return AuthResponse.builder()
+                .token(newAccessToken)
+                .refreshToken(request.getRefreshToken())
+                .role(user.getRole())
+                .user(mapToUserResponse(user))
+                .build();
+    }
+
+    @Override
+    public void logout(RefreshTokenRequest request) {
+        refreshTokenService.revoke(request.getRefreshToken());
     }
 
     @Override

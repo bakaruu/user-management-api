@@ -10,6 +10,8 @@ public interface UserService {
 
     AuthResponse register(RegisterRequest request);
     AuthResponse login(LoginRequest request);
+    AuthResponse refreshToken(RefreshTokenRequest request);
+    void logout(RefreshTokenRequest request);
     UserResponse getMe(UUID id);
     UserResponse updateMe(UUID id, UpdateUserRequest request);
     List<UserResponse> getAllUsers();

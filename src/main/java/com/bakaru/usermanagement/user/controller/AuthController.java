@@ -2,6 +2,7 @@ package com.bakaru.usermanagement.user.controller;
 
 import com.bakaru.usermanagement.user.dto.AuthResponse;
 import com.bakaru.usermanagement.user.dto.LoginRequest;
+import com.bakaru.usermanagement.user.dto.RefreshTokenRequest;
 import com.bakaru.usermanagement.user.dto.RegisterRequest;
 import com.bakaru.usermanagement.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,11 +30,27 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.register(request));
     }
 
-    @Operation(summary = "Login", description = "Authenticates a user and returns a JWT token")
+    @Operation(summary = "Login", description = "Authenticates a user and returns a JWT access token and refresh token")
     @ApiResponse(responseCode = "200", description = "Login successful")
     @ApiResponse(responseCode = "401", description = "Invalid credentials or account suspended")
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
         return ResponseEntity.ok(userService.login(request));
+    }
+
+    @Operation(summary = "Refresh access token", description = "Exchanges a valid refresh token for a new 15-minute access token")
+    @ApiResponse(responseCode = "200", description = "New access token issued")
+    @ApiResponse(responseCode = "401", description = "Refresh token invalid, expired, or revoked")
+    @PostMapping("/refresh")
+    public ResponseEntity<AuthResponse> refresh(@Valid @RequestBody RefreshTokenRequest request) {
+        return ResponseEntity.ok(userService.refreshToken(request));
+    }
+
+    @Operation(summary = "Logout", description = "Revokes the given refresh token server-side")
+    @ApiResponse(responseCode = "204", description = "Logged out successfully")
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(@Valid @RequestBody RefreshTokenRequest request) {
+        userService.logout(request);
+        return ResponseEntity.noContent().build();
     }
 }
