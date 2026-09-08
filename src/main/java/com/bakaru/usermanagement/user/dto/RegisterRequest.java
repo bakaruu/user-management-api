@@ -2,6 +2,7 @@ package com.bakaru.usermanagement.user.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,15 +20,18 @@ public class RegisterRequest {
     private String lastName;
 
     @NotBlank(message = "DNI is required")
-    @Size(max = 9, message = "DNI must be at most 8 characters")
+    @Pattern(regexp = "^[0-9]{8}[A-Za-z]$", message = "DNI must be 8 digits followed by a letter")
     private String dni;
 
     @NotBlank(message = "Email is required")
     @Email(message = "Email must be valid")
+    @Pattern(regexp = "^[\\w.+-]+@[\\w-]+\\.[a-zA-Z]{2,}$", message = "Email must include a valid domain")
     @Size(max = 100, message = "Email must be at most 100 characters")
     private String email;
 
     @NotBlank(message = "Password is required")
     @Size(min = 8, max = 255, message = "Password must be at least 8 characters")
     private String password;
+
+
 }
