@@ -92,7 +92,12 @@ public class UserServiceImpl implements UserService {
         if (request.getFirstName() != null) user.setFirstName(request.getFirstName());
         if (request.getLastName() != null) user.setLastName(request.getLastName());
         if (request.getEmail() != null) user.setEmail(request.getEmail());
-        if (request.getPassword() != null) user.setPassword(passwordEncoder.encode(request.getPassword()));
+        if (request.getPassword() != null) {
+            if (passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+                throw new OperationNotAllowedException("New password must be different from the current password");
+            }
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
+        }
 
         userRepository.save(user);
         return mapToUserResponse(user);
