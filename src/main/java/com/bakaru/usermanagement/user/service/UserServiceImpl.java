@@ -80,14 +80,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponse getMe(UUID id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         return mapToUserResponse(user);
     }
 
     @Override
     public UserResponse updateMe(UUID id, UpdateUserRequest request) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         if (request.getFirstName() != null) user.setFirstName(request.getFirstName());
         if (request.getLastName() != null) user.setLastName(request.getLastName());
@@ -114,7 +114,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponse getUserById(UUID id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         return mapToUserResponse(user);
     }
 
@@ -126,7 +126,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void changeUserStatus(UUID id, UserStatus status) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         if (user.getRole() == Role.ADMIN) {
             throw new OperationNotAllowedException("Cannot change status of an admin account");
@@ -139,10 +139,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(UUID id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         if (user.getRole() == Role.ADMIN) {
-            throw new ResourceAlreadyExistsException("Cannot delete an admin account");
+            throw new OperationNotAllowedException("Cannot delete an admin account");
         }
         userRepository.delete(user);
     }
