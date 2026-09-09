@@ -76,7 +76,7 @@ SPRING_PROFILES_ACTIVE=dev ./mvnw spring-boot:run
 ```
 
 **5. Access API documentation**
-[](http://localhost:8080/swagger-ui.html)
+(http://localhost:8080/swagger-ui.html)
 
 ---
 
