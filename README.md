@@ -8,6 +8,12 @@ This project demonstrates how to design a secure, scalable, and maintainable bac
 
 ---
 
+## 🔗 Live Deployment
+
+Live demo, Swagger docs, and full write-up: see the [portfolio case study](https://bakaru.dev/projects/user-management).
+
+---
+
 ## ⚙️ Technologies Used
 
 | | Technology |
@@ -21,7 +27,7 @@ This project demonstrates how to design a secure, scalable, and maintainable bac
 | 🐳 | Docker + Docker Compose |
 | 📄 | SpringDoc OpenAPI (Swagger UI) |
 | ⚡ | Lombok |
-| 🧪 | JUnit 5 + Mockito |
+| 🧪 | JUnit 5 + Mockito + Spring MockMvc |
 
 ---
 
@@ -29,7 +35,8 @@ This project demonstrates how to design a secure, scalable, and maintainable bac
 
 | | Feature |
 |--|---------|
-| 🔐 | Secure authentication with JWT |
+| 🔐 | Secure authentication with JWT (15-minute access tokens) |
+| 🔁 | Revocable refresh tokens for persistent sessions (7-day lifetime) |
 | 👥 | Role-based access control (USER / ADMIN) |
 | 🧾 | User registration and login |
 | 🛠️ | User profile management |
@@ -69,41 +76,3 @@ SPRING_PROFILES_ACTIVE=dev ./mvnw spring-boot:run
 ```
 
 **5. Access API documentation**
-```
-http://localhost:8080/swagger-ui.html
-```
-
----
-
-## 📡 API Endpoints
-
-### 🔓 Public
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `POST` | `/auth/register` | Register a new user |
-| `POST` | `/auth/login` | Login and receive JWT |
-
-### 👤 User
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `GET` | `/users/me` | Get own profile |
-| `PUT` | `/users/me` | Update own profile |
-
-### 🔑 Admin
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `GET` | `/users` | List all users |
-| `GET` | `/users/{id}` | Get user by ID |
-| `PUT` | `/users/{id}` | Update any user |
-| `PATCH` | `/users/{id}/status` | Suspend or activate a user |
-| `DELETE` | `/users/{id}` | Delete a user |
-
----
-
-## 🧪 Running Tests
-```bash
-./mvnw test
-```
