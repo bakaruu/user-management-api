@@ -76,3 +76,43 @@ SPRING_PROFILES_ACTIVE=dev ./mvnw spring-boot:run
 ```
 
 **5. Access API documentation**
+[](http://localhost:8080/swagger-ui.html)
+
+---
+
+## 📡 API Endpoints
+
+### 🔓 Public
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/auth/register` | Register a new user |
+| `POST` | `/auth/login` | Login and receive a JWT access token and refresh token |
+| `POST` | `/auth/refresh` | Exchange a valid refresh token for a new access token |
+| `POST` | `/auth/logout` | Revoke a refresh token, ending that session |
+
+### 👤 User
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/users/me` | Get own profile |
+| `PUT` | `/users/me` | Update own profile |
+
+### 🔑 Admin
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/users` | List all users |
+| `GET` | `/users/{id}` | Get user by ID |
+| `PUT` | `/users/{id}` | Update any user |
+| `PATCH` | `/users/{id}/status` | Suspend or activate a user |
+| `DELETE` | `/users/{id}` | Delete a user |
+
+---
+
+## 🧪 Running Tests
+```bash
+./mvnw test
+```
+
+Includes unit tests (Mockito) for service-layer business logic and integration tests (`@SpringBootTest` + MockMvc) that exercise the full security filter chain, covering both authenticated and unauthenticated request paths.
