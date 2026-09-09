@@ -3,6 +3,7 @@ package com.bakaru.usermanagement.user.service;
 import com.bakaru.usermanagement.exception.InvalidCredentialsException;
 import com.bakaru.usermanagement.exception.ResourceAlreadyExistsException;
 import com.bakaru.usermanagement.exception.ResourceNotFoundException;
+import com.bakaru.usermanagement.security.RefreshTokenService;
 import com.bakaru.usermanagement.user.dto.AuthResponse;
 import com.bakaru.usermanagement.user.dto.LoginRequest;
 import com.bakaru.usermanagement.user.dto.RegisterRequest;
@@ -37,6 +38,9 @@ class UserServiceImplTest {
 
     @Mock
     private JwtService jwtService;
+
+    @Mock
+    private RefreshTokenService refreshTokenService;
 
     @InjectMocks
     private UserServiceImpl userServiceImpl;
@@ -99,6 +103,7 @@ class UserServiceImplTest {
         when(passwordEncoder.encode(any())).thenReturn("hashedPassword");
         when(userRepository.save(any())).thenReturn(user);
         when(jwtService.generateToken(any(), any(), any())).thenReturn("token");
+        when(refreshTokenService.generate(any())).thenReturn("mock-refresh-token");
 
         AuthResponse response = userServiceImpl.register(registerRequest);
 
@@ -139,6 +144,7 @@ class UserServiceImplTest {
         when(userRepository.findByEmail(any())).thenReturn(Optional.of(user));
         when(passwordEncoder.matches(any(), any())).thenReturn(true);
         when(jwtService.generateToken(any(), any(), any())).thenReturn("token");
+        when(refreshTokenService.generate(any())).thenReturn("mock-refresh-token");
 
         AuthResponse response = userServiceImpl.login(loginRequest);
 
