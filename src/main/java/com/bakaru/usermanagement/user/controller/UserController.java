@@ -1,8 +1,8 @@
 package com.bakaru.usermanagement.user.controller;
 
+import com.bakaru.usermanagement.user.dto.ChangeStatusRequest;
 import com.bakaru.usermanagement.user.dto.UpdateUserRequest;
 import com.bakaru.usermanagement.user.dto.UserResponse;
-import com.bakaru.usermanagement.user.entity.UserStatus;
 import com.bakaru.usermanagement.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -81,8 +81,8 @@ public class UserController {
     @PatchMapping("/{id}/status")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> changeUserStatus(@PathVariable UUID id,
-                                                 @RequestBody String status) {
-        userService.changeUserStatus(id, UserStatus.valueOf(status.replace("\"", "")));
+                                                 @Valid @RequestBody ChangeStatusRequest request) {
+        userService.changeUserStatus(id, request.getStatus());
         return ResponseEntity.noContent().build();
     }
 
