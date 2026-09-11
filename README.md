@@ -1,5 +1,7 @@
 # 🧩 User Management API
 
+[![CI](https://github.com/bakaruu/user-management-api/actions/workflows/ci.yml/badge.svg)](https://github.com/bakaruu/user-management-api/actions/workflows/ci.yml)
+
 A RESTful API focused on authentication and user management, built to reflect real backend architecture practices using Spring Boot.
 
 This project demonstrates how to design a secure, scalable, and maintainable backend system with stateless authentication, clear separation of concerns, and database integration.
@@ -210,6 +212,12 @@ All errors share the same shape:
 ```
 
 Includes unit tests (Mockito) for service-layer business logic and integration tests (`@SpringBootTest` + MockMvc) that exercise the full security filter chain, covering both authenticated and unauthenticated request paths.
+
+---
+
+## ⚙️ Continuous Integration
+
+Every push and pull request to `main` triggers a [GitHub Actions workflow](.github/workflows/ci.yml) that builds the project and runs the full test suite (`./mvnw verify`), so a broken build or a failing test never slips into `main` unnoticed.
 
 ---
 
