@@ -28,31 +28,32 @@ privileges than it was given.**
 
 ## Architecture
 
-```mermaid
-flowchart LR
-    client[Client<br/>Angular SPA · Swagger] --> filter
+A request falls straight down: security first, then HTTP translation, then the rules, then the database.
 
-    subgraph app[Spring Boot]
-        filter[JwtAuthenticationFilter<br/>validates the access token]
-        chain[SecurityFilterChain<br/>stateless · CORS · route rules]
-        controllers[AuthController<br/>UserController]
-        service[UserServiceImpl<br/>business rules]
-        jwt[JwtService · RefreshTokenService]
-        handler[GlobalExceptionHandler]
+```mermaid
+flowchart TD
+    client["Client<br/>Angular SPA · Swagger"] --> filter
+
+    subgraph boot["Spring Boot"]
+        filter["<b>JwtAuthenticationFilter</b><br/>reads the Bearer token"]
+        rules["<b>SecurityFilterChain</b><br/>stateless · /auth public · /users by role"]
+        ctrl["<b>AuthController · UserController</b><br/>HTTP in, DTOs out"]
+        svc["<b>UserServiceImpl</b><br/>the rules: who may suspend whom"]
+        tok["<b>JwtService · RefreshTokenService</b>"]
+        err["GlobalExceptionHandler<br/>one error shape"]
+
+        filter --> rules --> ctrl --> svc --> tok
+        ctrl -. "throws" .-> err
     end
 
-    db[(PostgreSQL<br/>users · refresh_tokens)]
-
-    filter --> chain --> controllers --> service
-    service --> jwt
-    service --> db
-    jwt --> db
-    controllers -. throws .-> handler
+    svc --> db[("PostgreSQL<br/>users · refresh_tokens")]
+    tok --> db
 ```
 
-Layers stay in their lane: controllers only translate HTTP, `UserServiceImpl` owns the rules (who may suspend whom,
-what a duplicate email means), and the security package owns tokens. Flyway migrations define the schema, and JPA
-runs with `ddl-auto: validate`, so the database is never changed by accident at startup.
+Each layer stays in its lane. Controllers only translate HTTP and never decide anything; `UserServiceImpl` owns the
+rules, such as who may suspend whom and what a duplicate email means; the security package owns tokens and is the
+only thing that mints or revokes them. Flyway migrations define the schema and JPA runs with `ddl-auto: validate`,
+so the database is never changed by accident at startup.
 
 ### The token lifecycle
 
